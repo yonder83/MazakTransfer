@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -377,7 +378,12 @@ namespace MazakTransfer
 
             if (fileName != null)
             {
+
+                Logger.ProgramLogger.Debug("Querying GetDrawingByName()");
+                Stopwatch sw = Stopwatch.StartNew();
                 var drawing = _drawingService.GetDrawingByName(fileName);
+                Logger.ProgramLogger.DebugFormat("Query executed in time {0} ms", sw.ElapsedMilliseconds);
+
                 if (drawing != null && !string.IsNullOrEmpty(drawing.Comment))
                 {
                     TextRange textRange = new TextRange(richTextBoxComment.Document.ContentStart, richTextBoxComment.Document.ContentEnd);
