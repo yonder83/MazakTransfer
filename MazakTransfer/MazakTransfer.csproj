@@ -232,6 +232,7 @@
     <Resource Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Database\Drawing.sql" />
     <Content Include="Database\MazakTransfer.sdf" />
   </ItemGroup>
   <ItemGroup>
