@@ -43,11 +43,11 @@ namespace MazakTransfer
 
         public MainWindow()
         {
-            if (CheckApplicationPaths() == false)
-                return;
-
             //Initialisoi mm. Filelistit
             InitializeComponent();
+
+            if (CheckApplicationPaths() == false)
+                return;
 
             InitializeFileLists();
             textBoxNumber.Focus();
@@ -182,8 +182,7 @@ namespace MazakTransfer
             }
 
             //Käynnistetään storyboard joka animoi statustekstin
-            Storyboard storyboard = FindResource("StatusTextFadeOut") as Storyboard;
-            if (storyboard != null)
+            if (Resources["StatusTextFadeOut"] is Storyboard storyboard)
             {
                 storyboard.Begin();
             }
