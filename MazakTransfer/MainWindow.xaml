@@ -1,0 +1,82 @@
+﻿<Window x:Class="MazakTransfer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mazakTransfer="clr-namespace:MazakTransfer" 
+        xmlns:properties="clr-namespace:MazakTransfer.Properties"
+        Title="Mazak Transfer" mc:Ignorable="d" FontSize="14" 
+        ResizeMode="CanMinimize" Height="700" Width="975">
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="402*"/>
+            <ColumnDefinition Width="155*"/>
+            <ColumnDefinition Width="302*"/>
+            <ColumnDefinition Width="100"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="{DynamicResource PolygonArrow}" Height="32" Margin="0,152,0,0" Name="buttonToMazak" VerticalAlignment="Top" Click="buttonToMazak_Click" HorizontalAlignment="Center" Width="119" ToolTip="Siirrä työstökoneelle" Grid.Column="1" />
+        <Button Height="32" Content="Poista piirustus" HorizontalAlignment="Center" x:Name="buttonRemoveDrawingFromMachine" VerticalAlignment="Top" Margin="0,406,0,0" Width="119" Grid.Column="1" ToolTip="Poistaa piirustuksen työstökoneelta" Click="buttonRemoveDrawingFromMachine_Click" />
+
+        <StatusBar Height="36" Margin="10,0,10,10" VerticalAlignment="Bottom" BorderThickness="1" Background="#FFF7F7F7" FontSize="14" Grid.ColumnSpan="3">
+            <StatusBarItem>
+                <TextBlock Name="statusText">
+                </TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+
+        <Button Content="{DynamicResource PolygonArrow}" Height="32" HorizontalAlignment="Center" Margin="0,211,0,0" Name="buttonFromMazak" VerticalAlignment="Top" Click="buttonFromMazak_Click" Width="119" ToolTip="Hae työstökoneelta" RenderTransformOrigin="0.5,0.5" Grid.Column="1" >
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1" ScaleX="-1"/>
+                    <SkewTransform AngleY="0" AngleX="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <Label Style="{DynamicResource LabelStyle}" Content="Piirustusnumero:" Margin="10,10,0,0" HorizontalAlignment="left" Width="119" VerticalAlignment="Top" VerticalContentAlignment="Center"></Label>
+        <TextBox Style="{DynamicResource TextBoxStyle}" Name="textBoxNumber" Margin="135,10,0,0" Padding="1" PreviewTextInput="textBoxNumber_PreviewTextInput" 
+                 HorizontalAlignment="Left" Width="257" VerticalAlignment="Top" TextChanged="textBoxNumber_TextChanged" />
+        <CheckBox Content="Poista Mazakilta" Margin="17,248,13,0" Name="checkBoxDeleteAfterTransfer" VerticalAlignment="Top" IsChecked="True" Padding="5,0,0,0"  HorizontalAlignment="Left" Width="125" VerticalContentAlignment="Center" UseLayoutRounding="False" ToolTip="Kun valittu, poistaa piirustuksen työstökoneelta sieltä haun yhteydessä" Grid.Column="1" />
+        <mazakTransfer:FileList Margin="0,45,10,0" x:Name="listViewMachineFiles" VerticalAlignment="Top" Width="382" Grid.ColumnSpan="2" Height="393" HorizontalAlignment="Right" Grid.Column="2" />
+        <Label Content="" Height="36" Margin="0,0,10,10" Name="labelVersion" VerticalAlignment="Bottom" Padding="0,5,5,5" HorizontalContentAlignment="Right" Grid.Column="3" VerticalContentAlignment="Stretch" />
+
+        <GroupBox Header="Kommentti" HorizontalAlignment="Left" Margin="10,443,0,0" VerticalAlignment="Top" Height="155" Width="616" Background="#FFEEEEEE" Grid.ColumnSpan="3" >
+            <GroupBox.BorderBrush>
+                <SolidColorBrush Color="#FFD5DFE5" Opacity="0.5"/>
+            </GroupBox.BorderBrush>
+            <Grid Margin="0,5,0,0" >
+                <RichTextBox HorizontalAlignment="Left" x:Name="richTextBoxComment" Width="448" />
+                <Button Height="32" Content="Tallenna kommentti" HorizontalAlignment="Right" x:Name="buttonSaveComment" VerticalAlignment="Bottom" Click="buttonSaveComment_Click" Padding="5,1" Margin="0,0,5,5" />
+            </Grid>
+        </GroupBox>
+        <mazakTransfer:FileList Height="393" HorizontalAlignment="left" Margin="10,45,0,0" x:Name="listViewRepositoryFiles" VerticalAlignment="Top" Width="382" />
+        <Label Content="Työstökoneen tiedostot:" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Height="29" Width="159" Grid.Column="2"/>
+        
+    </Grid>
+    <Window.Resources>
+
+        <Storyboard x:Key="StatusTextFadeOut" Storyboard.TargetProperty="(TextBlock.Opacity)" Storyboard.TargetName="statusText">
+            <DoubleAnimationUsingKeyFrames>
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:3" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Style x:Key="LabelStyle" TargetType="{x:Type Label}">
+            <Setter Property="Height" Value="30" />
+        </Style>
+
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Height" Value="30" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+
+        <Polygon x:Key="PolygonArrow" x:Shared="False" Points="0,7 55,7 55,3 70,11 55,19 55,15 0,15" Stroke="Black">
+            <Polygon.Fill>
+                <SolidColorBrush Color="Black" Opacity="0.5"/>
+            </Polygon.Fill>
+        </Polygon>
+    </Window.Resources>
+</Window>

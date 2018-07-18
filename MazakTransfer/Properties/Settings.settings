@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MazakTransfer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LocalPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\temp\MazakTransfer\Mazak</Value>
+    </Setting>
+    <Setting Name="MazakPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\temp\MazakTransfer\MazakTyöstökone</Value>
+    </Setting>
+    <Setting Name="FileListUpdateInterval" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
+    <Setting Name="DatabasePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\temp\MazakTransfer\Database</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
