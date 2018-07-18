@@ -37,7 +37,7 @@ namespace MazakTransfer.Database
                 drawingToAddComment.Comment = comment;
 
                 var state = context.Entry(drawingToAddComment).State;
-                if (state == System.Data.EntityState.Detached)
+                if (state == System.Data.Entity.EntityState.Detached)
                 {
                     drawingToAddComment.FileName = drawingName;
                     context.Drawings.Add(drawingToAddComment);
