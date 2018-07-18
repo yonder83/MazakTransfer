@@ -9,7 +9,7 @@ namespace MazakTransfer.Database
     {
         public Drawing GetDrawingByName(string drawingName)
         {
-            using (var context = new MazakTransferContainer())
+            using (var context = new MazakTransferContext())
             {
                 var query = from drawing in context.Drawings
                             where drawing.FileName == drawingName
@@ -27,7 +27,7 @@ namespace MazakTransfer.Database
         /// <returns></returns>
         public bool SaveCommentByDrawingName(string drawingName, string comment)
         {
-            using (var context = new MazakTransferContainer())
+            using (var context = new MazakTransferContext())
             {
                 var query = from drawing in context.Drawings
                             where drawing.FileName == drawingName

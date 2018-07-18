@@ -119,25 +119,9 @@
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Constants.cs" />
-    <Compile Include="Database\Drawing.cs">
-      <DependentUpon>MazakTransfer.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Database\Drawing.cs" />
     <Compile Include="Database\DrawingService.cs" />
-    <Compile Include="Database\MazakTransfer.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MazakTransfer.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Database\MazakTransfer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MazakTransfer.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Database\MazakTransfer.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MazakTransfer.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Database\MazakTransferContext.cs" />
     <Compile Include="FileList.xaml.cs">
       <DependentUpon>FileList.xaml</DependentUpon>
     </Compile>
@@ -193,10 +177,6 @@
       <SubType>Designer</SubType>
       <TransformOnBuild>true</TransformOnBuild>
     </None>
-    <EntityDeploy Include="Database\MazakTransfer.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MazakTransfer.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
@@ -209,16 +189,6 @@
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
       <IsTransformFile>True</IsTransformFile>
-    </None>
-    <None Include="Database\MazakTransfer.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MazakTransfer.Context.cs</LastGenOutput>
-      <DependentUpon>MazakTransfer.edmx</DependentUpon>
-    </None>
-    <None Include="Database\MazakTransfer.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MazakTransfer.cs</LastGenOutput>
-      <DependentUpon>MazakTransfer.edmx</DependentUpon>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
