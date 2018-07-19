@@ -7,5 +7,5 @@ Tee tiedostolistaan mahdollisuus hiiren oikealla painikkeella poistaa tiedosto.
 
 Korjaukset TODO: 
 -Kun on valittuna tiedostolistalta jokin tiedosto, sitten listaus päivittyy. Valinta säilyy kyllä, mutta kun koittaa näppäimistöllä mennä seuraavaan tiedostoon (alas tai ylöspäinnuolet) valinta siirtyy listan ensimmäiseen!
--Ohjelman avaamisen jälkeen käyttöliittymä jäätyy kun ohjelma hakee tiedostoja --> tee säikeessä jotta käyttöliittymä ei jäädy.
+-Improve EF startup performance. https://www.red-gate.com/simple-talk/dotnet/net-tools/entity-framework-performance-and-what-you-can-do-about-it/
 -Mahdollisuus asetusten muuttamiseen ohjelmasta käsin, asetusvalikko jonnekin.
