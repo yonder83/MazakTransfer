@@ -121,6 +121,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Database\Drawing.cs" />
     <Compile Include="Database\DrawingService.cs" />
+    <Compile Include="Database\DbInitializer.cs" />
     <Compile Include="Database\MazakTransferContext.cs" />
     <Compile Include="FileList.xaml.cs">
       <DependentUpon>FileList.xaml</DependentUpon>

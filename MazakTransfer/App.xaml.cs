@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MazakTransfer.Database;
+using System;
 using System.Globalization;
 using System.Threading;
 using System.Windows;
@@ -24,6 +25,8 @@ namespace MazakTransfer
 
             //Set DataDirectory. EF connection string uses that
             AppDomain.CurrentDomain.SetData("DataDirectory", MazakTransfer.Properties.Settings.Default.DatabasePath);
+
+            DbInitializer.Initialize();
         }
 
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
@@ -27,16 +26,14 @@ namespace MazakTransfer.Util
                 {
                     _searching = true;
 
-                    var tokenSource = new CancellationTokenSource();
-
-                    var task = Task.Factory.StartNew(SearchBackground(filePath, searchPattern), tokenSource.Token);
+                    var task = Task.Factory.StartNew(SearchBackground(filePath, searchPattern));
                     var continuationTask = task.ContinueWith(t =>
                     {
                         _searching = false;
 
                         //Kutsutaan paluumetodia, palautetaan sille tiedostolista
                         _dispatcher.Invoke(actionToCallWhenDone, t.Result);
-                    }, tokenSource.Token);
+                    });
                 }
             }
         }
