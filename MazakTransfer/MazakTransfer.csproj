@@ -79,12 +79,6 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServerCompact, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.SqlServerCompact.6.2.0\lib\net40\EntityFramework.SqlServerCompact.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net40-client\log4net.dll</HintPath>
     </Reference>
@@ -121,8 +115,6 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Database\Drawing.cs" />
     <Compile Include="Database\DrawingService.cs" />
-    <Compile Include="Database\DbInitializer.cs" />
-    <Compile Include="Database\MazakTransferContext.cs" />
     <Compile Include="FileList.xaml.cs">
       <DependentUpon>FileList.xaml</DependentUpon>
     </Compile>
