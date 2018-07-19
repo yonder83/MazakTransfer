@@ -390,7 +390,8 @@ namespace MazakTransfer
                     byte[] byteArray = Encoding.UTF8.GetBytes(drawing.Comment);
                     using (MemoryStream stream = new MemoryStream(byteArray))
                     {
-                        textRange.Load(stream, DataFormats.Rtf);
+                        // Detect in which format text is. Earlier versions of MazakTransfer used Rtf format to save comments.
+                        textRange.Load(stream, drawing.Comment.StartsWith(@"{\rtf") ? DataFormats.Rtf : DataFormats.Text);
                     }
                 }
             }
@@ -411,20 +412,9 @@ namespace MazakTransfer
             Validation.CheckDrawingNumber(drawingNumber);
 
             TextRange textRange = new TextRange(richTextBoxComment.Document.ContentStart, richTextBoxComment.Document.ContentEnd);
+            string text = textRange.Text;
 
-            string xaml;
-            using (MemoryStream stream = new MemoryStream())
-            {
-                textRange.Save(stream, DataFormats.Rtf);
-                stream.Seek(0, SeekOrigin.Begin);
-
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    xaml = reader.ReadToEnd();
-                }
-            }
-
-            bool saved = _drawingService.SaveCommentByDrawingName(drawingNumber, xaml);
+            bool saved = _drawingService.SaveCommentByDrawingName(drawingNumber, text);
             if (saved)
             {
                 WriteLogLine(String.Format(Properties.Resources.SuccessTextCommentSaved, drawingNumber), StatusLevel.Completed);
