@@ -1,12 +1,13 @@
-﻿using System.Configuration;
-using System.Data;
+﻿using System;
+using System.Configuration;
 using System.Data.SqlServerCe;
-using System.Linq;
 
 namespace MazakTransfer.Database
 {
     public class DrawingService
     {
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["MazakTransferContext"].ConnectionString;
+
         public string GetDrawingCommentByName(string drawingName)
         {
             if (drawingName == null) return null;
@@ -18,7 +19,6 @@ namespace MazakTransfer.Database
                                 FROM [Drawing] AS [Extent1]
                                 WHERE [Extent1].[FileName] = @FileName";
 
-            var connectionString = ConfigurationManager.ConnectionStrings["MazakTransferContext"].ConnectionString;
             using (var connection = new SqlCeConnection(connectionString))
             {
                 using (var command = new SqlCeCommand(sql, connection))
@@ -49,25 +49,80 @@ namespace MazakTransfer.Database
         /// <returns></returns>
         public bool SaveCommentByDrawingName(string drawingName, string comment)
         {
-            using (var context = new MazakTransferContext())
+            if (drawingName == null) return false;
+
+            Drawing drawing = null;
+
+            const string sql = @"SELECT TOP (1) 
+               [Extent1].[Id] AS [Id], 
+               [Extent1].[FileName] AS [FileName], 
+               [Extent1].[Comment] AS [Comment]
+               FROM [Drawing] AS [Extent1]
+               WHERE [Extent1].[FileName] = @FileName";
+
+            using (var connection = new SqlCeConnection(connectionString))
             {
-                var query = from drawing in context.Drawings
-                            where drawing.FileName == drawingName
-                            select drawing;
-
-                Drawing drawingToAddComment = query.FirstOrDefault() ?? new Drawing();
-                drawingToAddComment.Comment = comment;
-
-                var state = context.Entry(drawingToAddComment).State;
-                if (state == System.Data.Entity.EntityState.Detached)
+                using (var command = new SqlCeCommand(sql, connection))
                 {
-                    drawingToAddComment.FileName = drawingName;
-                    context.Drawings.Add(drawingToAddComment);
+                    command.Parameters.AddWithValue("FileName", drawingName);
+                    connection.Open();
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            drawing = new Drawing
+                            {
+                                Id = (long) reader["Id"],
+                                FileName = (string) reader["FileName"],
+                                Comment = (string) reader["Comment"]
+                            };
+                        }
+
+                        reader.Close();
+                        connection.Close();
+                    }
                 }
+            }
 
-                int changes = context.SaveChanges();
+            if (drawing == null)
+            {
+                const string insertSql = @"INSERT [Drawing]([FileName], [Comment])
+                VALUES (@FileName, @Comment);";
 
-                return changes > 0;
+                using (var connection = new SqlCeConnection(connectionString))
+                {
+                    using (var command = new SqlCeCommand(insertSql, connection))
+                    {
+                        command.Parameters.AddWithValue("FileName", drawingName);
+                        command.Parameters.AddWithValue("Comment", comment);
+                        connection.Open();
+                        int success = command.ExecuteNonQuery();
+                        connection.Close();
+                        return success > 0;
+                    }
+                }
+            }
+
+            if (String.Equals(comment, drawing.Comment))
+            {
+                return false;
+            }
+
+            const string updateSql = @"UPDATE [Drawing]
+               SET [Comment] = @Comment
+               WHERE ([Id] = @Id)";
+
+            using (var connection = new SqlCeConnection(connectionString))
+            {
+                using (var command = new SqlCeCommand(updateSql, connection))
+                {
+                    command.Parameters.AddWithValue("Comment", comment);
+                    command.Parameters.AddWithValue("Id", drawing.Id);
+                    connection.Open();
+                    int success = command.ExecuteNonQuery();
+                    connection.Close();
+                    return success > 0;
+                }
             }
         }
     }
