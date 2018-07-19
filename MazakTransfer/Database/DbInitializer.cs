@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 namespace MazakTransfer.Database
 {
@@ -9,12 +10,16 @@ namespace MazakTransfer.Database
             //Disable code first migrations. (Stops queries to __MigrationHistory table)
             System.Data.Entity.Database.SetInitializer<MazakTransferContext>(null);
             
-            //Call Initialize in background thread. This takes about 3 seconds. It impoves program startup performance.
+            //Make query to database. This is first query with EF and takes longer because EF initializes itself
             Task.Factory.StartNew(() =>
             {
                 using (var context = new MazakTransferContext())
                 {
-                    context.Database.Initialize(false);
+                    var query = from drawing in context.Drawings
+                        where drawing.FileName == ""
+                        select drawing;
+
+                    var result = query.FirstOrDefault();
                 }
             });
         }

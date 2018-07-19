@@ -1,6 +1,7 @@
-﻿using System;
+﻿using MazakTransfer.Database;
+using MazakTransfer.Util;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -12,8 +13,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using MazakTransfer.Database;
-using MazakTransfer.Util;
 
 namespace MazakTransfer
 {
@@ -377,21 +376,18 @@ namespace MazakTransfer
 
             if (fileName != null)
             {
+                var comment = _drawingService.GetDrawingCommentByName(fileName);
 
-                Logger.ProgramLogger.Debug("Querying GetDrawingByName()");
-                Stopwatch sw = Stopwatch.StartNew();
-                var drawing = _drawingService.GetDrawingByName(fileName);
-                Logger.ProgramLogger.DebugFormat("Query executed in time {0} ms", sw.ElapsedMilliseconds);
-
-                if (drawing != null && !string.IsNullOrEmpty(drawing.Comment))
+                if (!string.IsNullOrEmpty(comment))
                 {
                     TextRange textRange = new TextRange(richTextBoxComment.Document.ContentStart, richTextBoxComment.Document.ContentEnd);
 
-                    byte[] byteArray = Encoding.UTF8.GetBytes(drawing.Comment);
+                    byte[] byteArray = Encoding.UTF8.GetBytes(comment);
                     using (MemoryStream stream = new MemoryStream(byteArray))
                     {
                         // Detect in which format text is. Earlier versions of MazakTransfer used Rtf format to save comments.
-                        textRange.Load(stream, drawing.Comment.StartsWith(@"{\rtf") ? DataFormats.Rtf : DataFormats.Text);
+                        bool isRtf = comment.StartsWith(@"{\rtf");
+                        textRange.Load(stream, isRtf ? DataFormats.Rtf : DataFormats.Text);
                     }
                 }
             }
