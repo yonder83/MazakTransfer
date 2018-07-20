@@ -6,7 +6,7 @@ namespace MazakTransfer.Database
 {
     public class DrawingService
     {
-        private readonly string connectionString = ConfigurationManager.ConnectionStrings["MazakTransferContext"].ConnectionString;
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["MazakTransferContainer"].ConnectionString;
 
         public string GetDrawingCommentByName(string drawingName)
         {
