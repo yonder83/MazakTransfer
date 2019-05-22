@@ -1,12 +1,41 @@
 ﻿using System;
-using System.Configuration;
-using System.Data.SqlServerCe;
+using System.Data.SQLite;
+using System.IO;
 
 namespace MazakTransfer.Database
 {
     public class DrawingService
     {
-        private readonly string connectionString = ConfigurationManager.ConnectionStrings["MazakTransferContainer"].ConnectionString;
+        //private readonly string connectionString = ConfigurationManager.ConnectionStrings["MazakTransferContainer"].ConnectionString;
+        private const string ConnectionString = "Data Source=MazakTransfer.sqlite;Version=3;";
+        private const string DatabaseName = "MazakTransfer.sqlite";
+
+        private const string SqlCreateTable = @"
+CREATE TABLE IF NOT EXISTS Drawing (
+    Id INTEGER NOT NULL PRIMARY KEY,
+    FileName nvarchar(20) NOT NULL,
+    Comment nvarchar(4000) NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS UQ_Drawing_FileName ON Drawing (FileName);
+";
+
+        public static void CreateDatabaseIfNotExists()
+        {
+            //Create database file if it doesn't exists
+            if (!File.Exists(DatabaseName))
+            {
+                SQLiteConnection.CreateFile(DatabaseName);
+            }
+
+            //Create table if it does not exists
+            using (var connection = new SQLiteConnection(ConnectionString))
+            {
+                connection.Open();
+                var command = new SQLiteCommand(SqlCreateTable, connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
 
         public string GetDrawingCommentByName(string drawingName)
         {
@@ -14,14 +43,14 @@ namespace MazakTransfer.Database
 
             string comment = null;
 
-            const string sql = @"SELECT TOP (1)
-                                [Extent1].[Comment] AS [Comment]
+            const string sql = @"SELECT [Extent1].[Comment] AS [Comment]
                                 FROM [Drawing] AS [Extent1]
-                                WHERE [Extent1].[FileName] = @FileName";
+                                WHERE [Extent1].[FileName] = @FileName
+                                LIMIT 1;";
 
-            using (var connection = new SqlCeConnection(connectionString))
+            using (var connection = new SQLiteConnection(ConnectionString))
             {
-                using (var command = new SqlCeCommand(sql, connection))
+                using (var command = new SQLiteCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("FileName", drawingName);
                     connection.Open();
@@ -53,16 +82,16 @@ namespace MazakTransfer.Database
 
             Drawing drawing = null;
 
-            const string sql = @"SELECT TOP (1) 
-               [Extent1].[Id] AS [Id], 
+            const string sql = @"SELECT [Extent1].[Id] AS [Id], 
                [Extent1].[FileName] AS [FileName], 
                [Extent1].[Comment] AS [Comment]
                FROM [Drawing] AS [Extent1]
-               WHERE [Extent1].[FileName] = @FileName";
+               WHERE [Extent1].[FileName] = @FileName 
+               LIMIT 1;";
 
-            using (var connection = new SqlCeConnection(connectionString))
+            using (var connection = new SQLiteConnection(ConnectionString))
             {
-                using (var command = new SqlCeCommand(sql, connection))
+                using (var command = new SQLiteCommand(sql, connection))
                 {
                     command.Parameters.AddWithValue("FileName", drawingName);
                     connection.Open();
@@ -86,12 +115,12 @@ namespace MazakTransfer.Database
 
             if (drawing == null)
             {
-                const string insertSql = @"INSERT [Drawing]([FileName], [Comment])
+                const string insertSql = @"INSERT INTO [Drawing]([FileName], [Comment])
                 VALUES (@FileName, @Comment);";
 
-                using (var connection = new SqlCeConnection(connectionString))
+                using (var connection = new SQLiteConnection(ConnectionString))
                 {
-                    using (var command = new SqlCeCommand(insertSql, connection))
+                    using (var command = new SQLiteCommand(insertSql, connection))
                     {
                         command.Parameters.AddWithValue("FileName", drawingName);
                         command.Parameters.AddWithValue("Comment", comment);
@@ -112,9 +141,9 @@ namespace MazakTransfer.Database
                SET [Comment] = @Comment
                WHERE ([Id] = @Id)";
 
-            using (var connection = new SqlCeConnection(connectionString))
+            using (var connection = new SQLiteConnection(ConnectionString))
             {
-                using (var command = new SqlCeCommand(updateSql, connection))
+                using (var command = new SQLiteCommand(updateSql, connection))
                 {
                     command.Parameters.AddWithValue("Comment", comment);
                     command.Parameters.AddWithValue("Id", drawing.Id);

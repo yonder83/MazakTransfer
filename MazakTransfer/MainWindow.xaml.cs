@@ -42,6 +42,8 @@ namespace MazakTransfer
 
         public MainWindow()
         {
+            DrawingService.CreateDatabaseIfNotExists();
+
             //Initialisoi mm. Filelistit
             InitializeComponent();
 
