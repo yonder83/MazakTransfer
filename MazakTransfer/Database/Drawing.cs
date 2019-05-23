@@ -1,16 +1,18 @@
-using System.ComponentModel.DataAnnotations;
+using SQLite;
 
 namespace MazakTransfer.Database
 {
     public partial class Drawing
     {
-        public long Id { get; set; }
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
 
-        [Required]
-        [StringLength(20)]
+        [Unique(Name = "UQ_FileName", Order = 0)]
+        [MaxLength(20)]
+        [NotNull]
         public string FileName { get; set; }
 
-        [StringLength(4000)]
+        [MaxLength(4000)]
         public string Comment { get; set; }
     }
 }
