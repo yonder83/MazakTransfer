@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Mazak Transfer")]
-[assembly: AssemblyCopyright("Copyright © Tuomo Kuusela 2018")]
+[assembly: AssemblyCopyright("Copyright © Tuomo Kuusela 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
