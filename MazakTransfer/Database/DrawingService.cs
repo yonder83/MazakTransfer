@@ -55,6 +55,10 @@ namespace MazakTransfer.Database
                 var drawing = connection.Table<Drawing>().FirstOrDefault(v => v.FileName == drawingName);
                 if (drawing == null)
                 {
+                    //Don't save if comment is empty
+                    if (comment == string.Empty)
+                        return false;
+
                     //Add new drawing if it doesn't exist in db
                     drawing = new Drawing
                     {
@@ -68,6 +72,7 @@ namespace MazakTransfer.Database
 
                 if (String.Equals(comment, drawing.Comment))
                 {
+                    //Only update comment if it haven't changed
                     return false;
                 }
 
