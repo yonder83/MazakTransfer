@@ -43,9 +43,12 @@ namespace MazakTransfer
         public MainWindow()
         {
             DrawingService.CreateDatabaseIfNotExists();
-
+           
             //Initialisoi mm. Filelistit
             InitializeComponent();
+
+            buttonSaveComment.Content = Properties.Resources.ButtonTextSaveComment;
+            labelVersion.Content = Properties.Resources.TextVersion + Assembly.GetEntryAssembly().GetName().Version.ToString(3);
 
             if (CheckApplicationPaths() == false)
                 return;
@@ -54,9 +57,6 @@ namespace MazakTransfer
             textBoxNumber.Focus();
 
             _drawingService = new DrawingService();
-
-            labelVersion.Content = Properties.Resources.TextVersion + Assembly.GetEntryAssembly().GetName().Version.ToString(3);
-            buttonSaveComment.Content = Properties.Resources.ButtonTextSaveComment;
         }
 
         private bool CheckApplicationPaths()
