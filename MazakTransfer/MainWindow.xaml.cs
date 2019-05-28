@@ -41,9 +41,7 @@ namespace MazakTransfer
         private const string SetUpPath = "Set Up";
 
         public MainWindow()
-        {
-            DrawingService.CreateDatabaseIfNotExists();
-           
+        {           
             //Initialisoi mm. Filelistit
             InitializeComponent();
 
@@ -57,24 +55,24 @@ namespace MazakTransfer
             textBoxNumber.Focus();
 
             _drawingService = new DrawingService();
+            _drawingService.CreateDatabaseIfNotExists();
         }
 
         private bool CheckApplicationPaths()
         {
-            try
+            if (string.IsNullOrWhiteSpace(Properties.Settings.Default.MazakPath))
             {
-                //Can throw exception
-                Validation.CheckMazakFolder(Properties.Settings.Default.MazakPath);
-                //Can throw exception
-                Validation.CheckLocalFolder(Properties.Settings.Default.LocalPath);
-                return true;
-            }
-            catch (MazakException ex)
-            {
-                WriteLogLine(ex.Message, ex.Level);
+                WriteLogLine("Määritä työstökoneen kansio.", StatusLevel.Error);
+                return false;
             }
 
-            return false;
+            if (string.IsNullOrWhiteSpace(Properties.Settings.Default.LocalPath))
+            {
+                WriteLogLine("Määritä paikallinen kansio.", StatusLevel.Error);
+                return false;
+            }
+
+            return true;
         }
 
         private void InitializeFileLists()
@@ -223,7 +221,7 @@ namespace MazakTransfer
             try
             {
                 //check drawing number. If something is wrong, exit
-                Validation.CheckDrawingNumber(drawingNumber);
+                CheckDrawingNumber(drawingNumber);
             }
             catch (MazakException ex)
             {
@@ -407,7 +405,7 @@ namespace MazakTransfer
         private void buttonSaveComment_Click(object sender, RoutedEventArgs e)
         {
             var drawingNumber = GetSelectedDrawingNumber();
-            Validation.CheckDrawingNumber(drawingNumber);
+            CheckDrawingNumber(drawingNumber);
 
             TextRange textRange = new TextRange(richTextBoxComment.Document.ContentStart, richTextBoxComment.Document.ContentEnd);
             string text = textRange.Text;
@@ -429,7 +427,7 @@ namespace MazakTransfer
             try
             {
                 //Validoidaan, jos tiedostoa ei ole valittu, poistutaan.
-                Validation.CheckDrawingNumber(drawingNumber);
+                CheckDrawingNumber(drawingNumber);
             }
             catch (MazakException ex)
             {
@@ -463,6 +461,19 @@ namespace MazakTransfer
             listViewMachineFiles.Refresh();
 
             WriteLogLine(Properties.Resources.SuccessMachineFileDelete, StatusLevel.Completed);
+        }
+
+        public static void CheckDrawingNumber(string drawingNumber)
+        {
+            if (String.IsNullOrWhiteSpace(drawingNumber))
+            {
+                throw new MazakException("Valitse piirustusnumero", StatusLevel.Error);
+            }
+            // check even if user cannot input other than numbers. Value can be copy pasted
+            if (!Regex.IsMatch(drawingNumber, Constants.NUMBERS_PATTERN))
+            {
+                throw new MazakException("Piirustusnumero voi sisältää vain numeroita", StatusLevel.Error);
+            }
         }
     }
 }

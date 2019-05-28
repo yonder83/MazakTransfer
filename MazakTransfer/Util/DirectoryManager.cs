@@ -9,6 +9,8 @@ namespace MazakTransfer.Util
 {
     internal static class DirectoryManager
     {
+        private static readonly IntPtr InvalidHandleValue = new IntPtr(-1);
+
         private static string MakePath(string path, string searchPattern)
         {
             if (!path.EndsWith("\\"))
@@ -23,7 +25,19 @@ namespace MazakTransfer.Util
             IntPtr findHandle = FindFirstFile(MakePath(path, searchPattern), out findData);
 
             if (findHandle == InvalidHandleValue)
+            { 
+                //Check error
+                uint error = GetLastError();
+                //TODO: log error to file
+
+                //If error is path not found, throw exception
+                if (error == SystemErrorCodes.ERROR_PATH_NOT_FOUND || error == SystemErrorCodes.ERROR_BAD_NETPATH)
+                {
+                    throw new MazakException("Kansiota " + path + " ei löydy.", StatusLevel.Error);
+                }
+
                 yield break;
+            }
             try
             {
                 do
@@ -113,7 +127,8 @@ namespace MazakTransfer.Util
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool FindClose(IntPtr hFindFile);
 
-        private static readonly IntPtr InvalidHandleValue = new IntPtr(-1);
+        [DllImport("kernel32.dll")]
+        private static extern uint GetLastError();
 
         #endregion
     }

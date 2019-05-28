@@ -16,7 +16,7 @@ namespace MazakTransfer.Util
             _dispatcher = dispatcher;
         }
 
-        public void SearchFileList(string filePath, string searchPattern, Action<IEnumerable<FileData>> actionToCallWhenDone)
+        public void SearchFileList(string filePath, string searchPattern, Action<IEnumerable<FileData>> actionToCallWhenDone, Action<Exception> actionToCallWhenError)
         {
             //Tehdään asynkronisesti tiedostojen haku
             if (!String.IsNullOrWhiteSpace(filePath) && !String.IsNullOrWhiteSpace(searchPattern))
@@ -31,8 +31,18 @@ namespace MazakTransfer.Util
                     {
                         _searching = false;
 
-                        //Kutsutaan paluumetodia, palautetaan sille tiedostolista
-                        _dispatcher.Invoke(actionToCallWhenDone, t.Result);
+                        if (t.IsFaulted)
+                        {
+                            Exception exception = t.Exception?.InnerException ?? t.Exception;
+
+                            //In case of exception, call error action. Return actual exception to return action
+                            _dispatcher.Invoke(actionToCallWhenError, exception);
+                        }
+                        else
+                        {
+                            //Kutsutaan paluumetodia, palautetaan sille tiedostolista
+                            _dispatcher.Invoke(actionToCallWhenDone, t.Result);
+                        }
                     });
                 }
             }

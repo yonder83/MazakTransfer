@@ -26,10 +26,20 @@ namespace MazakTransfer
 
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            var mainWindow =  MainWindow as MainWindow;
-            if (mainWindow != null) 
-                mainWindow.WriteLogLine(e.Exception.Message, StatusLevel.Error);
+            if (MainWindow is MainWindow mainWindow)
+            {
+                Exception exception = null;
+                if (e.Exception != null )
+                {
+                    exception = e.Exception.InnerException ?? e.Exception;
+                }
             
+                if (exception != null)
+                {
+                    mainWindow.WriteLogLine(exception.Message, StatusLevel.Error);
+                }
+            }
+
             e.Handled = true;
         }
     }

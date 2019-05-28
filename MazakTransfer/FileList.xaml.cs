@@ -114,8 +114,17 @@ namespace MazakTransfer
                 FileListProgressBar.Visibility = Visibility.Visible;
 
                 //Suoritetaan haku. Metodi tekee vain yhden haun kerrallaan. Jos aikaisempi haku on kesken, jälkimmäinen ei tee mitään
-                _fileSearcher.SearchFileList(_filePath, searchPattern, SearchDone);
+                _fileSearcher.SearchFileList(_filePath, searchPattern, SearchDone, SearchDoneWithError);
             }
+        }
+
+        private void SearchDoneWithError(Exception exception)
+        {
+            //Progressbar pois
+            FileListProgressBar.Visibility = Visibility.Hidden;
+
+            //File search ends with an exception. Throw that exception
+            throw exception;
         }
 
         //Tätä kutsutaan kun haku on valmis
