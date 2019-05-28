@@ -41,18 +41,18 @@
         <mazakTransfer:FileList Margin="0,45,10,0" x:Name="listViewMachineFiles" VerticalAlignment="Top" Width="382" Grid.ColumnSpan="2" Height="393" HorizontalAlignment="Right" Grid.Column="2" />
         <Label Content="" Height="36" Margin="0,0,10,10" Name="labelVersion" VerticalAlignment="Bottom" Padding="0,5,5,5" HorizontalContentAlignment="Right" Grid.Column="3" VerticalContentAlignment="Stretch" />
 
-        <GroupBox Header="Kommentti" HorizontalAlignment="Left" Margin="10,443,0,0" VerticalAlignment="Top" Height="155" Width="616" Background="#FFEEEEEE" Grid.ColumnSpan="3" >
+        <GroupBox Header="Kommentti" Margin="10,443,10,0" VerticalAlignment="Top" Height="155" Background="#FFEEEEEE" Grid.ColumnSpan="4" >
             <GroupBox.BorderBrush>
                 <SolidColorBrush Color="#FFD5DFE5" Opacity="0.5"/>
             </GroupBox.BorderBrush>
             <Grid Margin="0,5,0,0" >
-                <RichTextBox HorizontalAlignment="Left" x:Name="richTextBoxComment" Width="448" />
+                <RichTextBox HorizontalAlignment="Left" x:Name="richTextBoxComment" Width="773" />
                 <Button Height="32" Content="Tallenna kommentti" HorizontalAlignment="Right" x:Name="buttonSaveComment" VerticalAlignment="Bottom" Click="buttonSaveComment_Click" Padding="5,1" Margin="0,0,5,5" />
             </Grid>
         </GroupBox>
         <mazakTransfer:FileList Height="393" HorizontalAlignment="left" Margin="10,45,0,0" x:Name="listViewRepositoryFiles" VerticalAlignment="Top" Width="382" />
         <Label Content="Työstökoneen tiedostot:" HorizontalAlignment="Left" Margin="5,10,0,0" VerticalAlignment="Top" Height="29" Width="159" Grid.Column="2"/>
-        
+
     </Grid>
     <Window.Resources>
 
