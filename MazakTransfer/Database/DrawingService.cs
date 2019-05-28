@@ -8,7 +8,7 @@ namespace MazakTransfer.Database
     {
         private const string DatabaseName = "MazakTransfer.sqlite";
 
-        public void CreateDatabaseIfNotExists()
+        public static void CreateDatabaseIfNotExists()
         {
             //Create database file if it doesn't exists
             using (var connection = new SQLiteConnection(DatabaseName))

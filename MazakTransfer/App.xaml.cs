@@ -25,24 +25,42 @@ namespace MazakTransfer
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), languageMetaData);
         }
 
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            DrawingService.CreateDatabaseIfNotExists();
+        }
+
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            if (MainWindow is MainWindow mainWindow)
+            Exception exception = null;
+            if (e.Exception != null)
             {
-                Exception exception = null;
-                if (e.Exception != null )
+                exception = e.Exception.InnerException ?? e.Exception;
+            }
+
+            if (exception == null) return;
+
+
+            if (!(exception is MazakException))
+            {
+                try
                 {
-                    exception = e.Exception.InnerException ?? e.Exception;
-                }
-            
-                if (exception != null)
-                {
+                    //Log to file if it is not MazakException
                     Logger.Error(exception.Message);
-                    mainWindow.WriteLogLine(exception.Message, StatusLevel.Error);
+                }
+                catch
+                {
                 }
             }
 
-            e.Handled = true;
+            if (MainWindow is MainWindow mainWindow)
+            {
+                //Show error in UI
+                mainWindow.WriteLogLine(exception.Message, StatusLevel.Error);
+
+                //MainWindow is initialized and showing, we need to set exception Handled
+                e.Handled = true;
+            }
         }
     }
 }

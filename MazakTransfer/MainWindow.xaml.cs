@@ -44,18 +44,16 @@ namespace MazakTransfer
         {           
             //Initialisoi mm. Filelistit
             InitializeComponent();
+            _drawingService = new DrawingService();
 
             buttonSaveComment.Content = Properties.Resources.ButtonTextSaveComment;
             labelVersion.Content = Properties.Resources.TextVersion + Assembly.GetEntryAssembly().GetName().Version.ToString(3);
 
-            if (CheckApplicationPaths() == false)
-                return;
-
-            InitializeFileLists();
-            textBoxNumber.Focus();
-
-            _drawingService = new DrawingService();
-            _drawingService.CreateDatabaseIfNotExists();
+            if (CheckApplicationPaths())
+            {
+                InitializeFileLists();
+                textBoxNumber.Focus();
+            }
         }
 
         private bool CheckApplicationPaths()
