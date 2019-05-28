@@ -28,13 +28,17 @@ namespace MazakTransfer.Util
             { 
                 //Check error
                 uint error = GetLastError();
-                //TODO: log error to file
 
-                //If error is path not found, throw exception
-                if (error == SystemErrorCodes.ERROR_PATH_NOT_FOUND || error == SystemErrorCodes.ERROR_BAD_NETPATH)
+                //throw exception if we know the error, this error is shown in UI
+                if (error == SystemErrorCodes.ERROR_PATH_NOT_FOUND
+                    || error == SystemErrorCodes.ERROR_BAD_NETPATH
+                    || error == SystemErrorCodes.ERROR_BAD_NET_NAME)
                 {
                     throw new MazakException("Kansiota " + path + " ei löydy.", StatusLevel.Error);
                 }
+
+                //Log error if it is not known. (It is not detected in exception thrown above)
+                Logger.Warning($"DirectoryManager.GetInternalFileInfo(). File search returned error {error}");
 
                 yield break;
             }
