@@ -120,6 +120,10 @@ namespace MazakTransfer
 
         private void SearchDoneWithError(Exception exception)
         {
+            //Siivotaan vanhat tulokset
+            FileDataCollection.Clear();
+            //Refreshataan näkymä
+            FileCollectionDataView.Refresh();
             //Progressbar pois
             FileListProgressBar.Visibility = Visibility.Hidden;
 
