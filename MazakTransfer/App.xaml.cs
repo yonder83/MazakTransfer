@@ -22,9 +22,6 @@ namespace MazakTransfer
             var xmlLanguage = XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.Name);
             var languageMetaData = new FrameworkPropertyMetadata(xmlLanguage);
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), languageMetaData);
-
-            //Set DataDirectory. EF connection string uses that
-            AppDomain.CurrentDomain.SetData("DataDirectory", MazakTransfer.Properties.Settings.Default.DatabasePath);
         }
 
         void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

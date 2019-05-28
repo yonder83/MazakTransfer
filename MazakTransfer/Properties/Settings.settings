@@ -11,8 +11,5 @@
     <Setting Name="FileListUpdateInterval" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">60</Value>
     </Setting>
-    <Setting Name="DatabasePath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\temp\MazakTransfer\Database</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

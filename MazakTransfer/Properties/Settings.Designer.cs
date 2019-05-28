@@ -49,14 +49,5 @@ namespace MazakTransfer.Properties {
                 return ((int)(this["FileListUpdateInterval"]));
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\temp\\MazakTransfer\\Database")]
-        public string DatabasePath {
-            get {
-                return ((string)(this["DatabasePath"]));
-            }
-        }
     }
 }

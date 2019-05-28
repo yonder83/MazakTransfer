@@ -1,12 +1,11 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Linq;
-using SQLite;
 
 namespace MazakTransfer.Database
 {
     public class DrawingService
     {
-        //private readonly string connectionString = ConfigurationManager.ConnectionStrings["MazakTransferContainer"].ConnectionString;
         private const string DatabaseName = "MazakTransfer.sqlite";
 
         public static void CreateDatabaseIfNotExists()
