@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Threading;
+using MazakTransfer.Util;
 
 namespace MazakTransfer
 {
@@ -36,6 +37,7 @@ namespace MazakTransfer
             
                 if (exception != null)
                 {
+                    Logger.Error(exception.Message);
                     mainWindow.WriteLogLine(exception.Message, StatusLevel.Error);
                 }
             }
