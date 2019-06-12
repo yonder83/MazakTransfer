@@ -473,5 +473,11 @@ namespace MazakTransfer
                 throw new MazakException("Piirustusnumero voi sisältää vain numeroita", StatusLevel.Error);
             }
         }
+
+        private void ButtonSettings_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow popup = new SettingsWindow();
+            popup.ShowDialog();
+        }
     }
 }
